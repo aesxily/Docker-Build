@@ -1,38 +1,52 @@
-FROM ubuntu:focal
-LABEL maintainer="a e s x i l y <aesxilymail@gmail.com>"
-ENV DEBIAN_FRONTEND noninteractive
+FROM ubuntu:bionic
 
+LABEL maintainer="a e s x i l y <aesxilymail@gmail.com>"
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV LANG=C.UTF-8
+ENV JAVA_OPTS=" -Xmx7G "
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+ENV USE_CCACHE=1
 WORKDIR /tmp
 
-RUN apt-get -yqq update \
-    && apt-get install --no-install-recommends -yqq adb autoconf automake axel bc bison build-essential ccache clang cmake curl expat expect fastboot flex g++ g++-multilib gawk gcc gcc-multilib git gnupg gperf htop imagemagick locales libncurses5 lib32ncurses5-dev lib32z1-dev libtinfo5 libc6-dev libcap-dev libexpat1-dev libgmp-dev '^liblz4-.*' '^liblzma.*' libmpc-dev libmpfr-dev libncurses5-dev libsdl1.2-dev libssl-dev libtool libxml-simple-perl libxml2 libxml2-utils lld lsb-core lzip '^lzma.*' lzop maven nano ncftp ncurses-dev openssh-server patch patchelf pkg-config pngcrush pngquant python2.7 python3-apt python-all-dev python re2c rclone rsync schedtool squashfs-tools subversion sudo tar texinfo tmate tzdata unzip w3m wget xsltproc zip zlib1g-dev zram-config zstd \
-    && curl --create-dirs -L -o /usr/local/bin/repo -O -L https://storage.googleapis.com/git-repo-downloads/repo \
-    && chmod a+rx /usr/local/bin/repo \
-    && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* \
-    && echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen && /usr/sbin/locale-gen \
-    && TZ=Asia/Kolkata \
-    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+#RUN apt-get -yqq update \    
+#    && apt-get install -yqq --no-install-recommends ffmpeg openjdk-8-jdk openjdk-8-jre maven nodejs ca-certificates-java python-is-python3 pigz tar rsync rclone aria2 libncurses5 adb autoconf automake axel bc bison build-essential ccache clang cmake curl expat fastboot flex g++ g++-multilib gawk gcc gcc-multilib git gnupg gperf htop imagemagick locales libncurses5 lib32ncurses5-dev lib32z1-dev libtinfo5 libc6-dev libcap-dev libexpat1-dev libgmp-dev '^liblz4-.*' '^liblzma.*' libmpc-dev libmpfr-dev libncurses5-dev libsdl1.2-dev libssl-dev libtool libxml-simple-perl libxml2 libxml2-utils lsb-core lzip '^lzma.*' lzop maven nano ncftp ncurses-dev openssh-server patch patchelf pkg-config pngcrush pngquant python2.7 python-all-dev python-is-python3 re2c rclone rsync schedtool squashfs-tools subversion sudo tar texinfo tmate tzdata unzip w3m wget xsltproc zip zlib1g-dev zram-config zstd \
+#    && apt-get -yqq purge default-jre-headless openjdk-11-jre-headless \
+#    && curl --create-dirs -L -o /usr/local/bin/repo -O -L https://storage.googleapis.com/git-repo-downloads/repo \
+#    && chmod a+rx /usr/local/bin/repo \
+#    && echo 'en_GB.UTF-8 UTF-8' > /etc/locale.gen && /usr/sbin/locale-gen \
+#    && TZ=Asia/Jakarta \
+#    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN git clone https://github.com/mirror/make \
-    && cd make && ./bootstrap && ./configure && make CFLAGS="-O3" \
-    && sudo install ./make /usr/bin/make
+#RUN apt-get -yqq clean \
+#    && apt-get -yqq autoremove \
+#    && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* \
+#    && echo "Set disable_coredump false" >> /etc/sudo.conf
 
-RUN git clone https://github.com/ninja-build/ninja.git \
-    && cd ninja && git reset --hard 8fa4d05 && ./configure.py --bootstrap \
-    && sudo install ./ninja /usr/bin/ninja
+RUN apt-get -yqq update
+RUN apt-get -yqq upgrade
+RUN apt-get install  -yqq sudo tzdata locales python-is-python3 pigz tar rsync rclone aria2 ccache curl wget zip unzip lzip lzop zlib1g-dev xzdec xz-utils pixz p7zip-full p7zip-rar zstd libzstd-dev lib32z1-dev ffmpeg maven nodejs ca-certificates-java python-is-python3 pigz tar rsync rclone aria2 libncurses5 adb autoconf automake axel bc bison build-essential ccache clang cmake curl expat fastboot flex g++ g++-multilib gawk gcc gcc-multilib git gnupg gperf htop imagemagick locales libncurses5 lib32ncurses5-dev lib32z1-dev libtinfo5 libc6-dev libcap-dev libexpat1-dev libgmp-dev '^liblz4-.*' '^liblzma.*' libmpc-dev libmpfr-dev libncurses5-dev libsdl1.2-dev libssl-dev libtool libxml-simple-perl libxml2 libxml2-utils lsb-core lzip '^lzma.*' lzop maven nano ncftp ncurses-dev openssh-server patch patchelf pkg-config pngcrush pngquant python2.7 python-all-dev python-is-python3 re2c rclone rsync schedtool squashfs-tools subversion sudo tar texinfo tmate tzdata unzip w3m wget xsltproc zip zlib1g-dev zram-config zstd
+#RUN echo 'en_GB.UTF-8 UTF-8' > /etc/locale.gen
+#RUN /usr/sbin/locale-gen
+#RUN ln -snf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+#RUN echo Asia/Jakarta > /etc/timezone
 
-RUN git clone https://github.com/google/kati.git \
-    && cd kati && git reset --hard e1d6ee2 && make ckati \
-    && sudo install ./ckati /usr/bin/ckati
+RUN apt-get install tzdata
+RUN apt-mark hold tzdata
+RUN echo 'en_GB.UTF-8 UTF-8' > /etc/locale.gen
+RUN /usr/sbin/locale-gen
+RUN ln -snf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+RUN echo Asia/Jakarta > /etc/timezone
+RUN apt install sudo git -yqq
+RUN git config --global user.name "a e s x i l y"
+RUN git config --global user.email "aesxilymail@gmail.com"
+RUN git clone https://github.com/akhilnarang/scripts /tmp/scripts
+WORKDIR /tmp/scripts
+RUN bash setup/android_build_env.sh
 
-RUN axel -a -n 10 https://github.com/facebook/zstd/releases/download/v1.5.0/zstd-1.5.0.tar.gz \
-    && tar xvzf zstd-1.5.0.tar.gz && cd zstd-1.5.0 \
-    && sudo make install
+RUN git clone https://github.com/I-n-o-k/android_tools /tmp/anu
+WORKDIR /tmp/anu
+RUN bash setup.sh
+WORKDIR /tmp
 
-RUN curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip \
-    && unzip rclone-current-linux-amd64.zip && cd rclone-*-linux-amd64 \
-    && sudo cp rclone /usr/bin/ && sudo chown root:root /usr/bin/rclone \
-    && sudo chmod 755 /usr/bin/rclone
-
-VOLUME ["/tmp/ccache", "/tmp/rom"]
-ENTRYPOINT ["/bin/bash"]
+VOLUME ["/tmp/rom", "/tmp/ccache"]

@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM ubuntu:impish
 
 LABEL maintainer="a e s x i l y <aesxilymail@gmail.com>"
 

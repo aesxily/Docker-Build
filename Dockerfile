@@ -1,6 +1,6 @@
 FROM ubuntu:impish
 
-LABEL maintainer="a e s x i l y <aesxilymail@gmail.com>"
+LABEL maintainer="xilyray <xilyray@gmail.com>"
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG=C.UTF-8
@@ -38,8 +38,8 @@ RUN /usr/sbin/locale-gen
 RUN ln -snf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 RUN echo Asia/Jakarta > /etc/timezone
 RUN apt install sudo git -yqq
-RUN git config --global user.name "a e s x i l y"
-RUN git config --global user.email "aesxilymail@gmail.com"
+RUN git config --global user.name "xilyray"
+RUN git config --global user.email "xilyray@gmail.com"
 RUN git clone https://github.com/akhilnarang/scripts /tmp/scripts
 WORKDIR /tmp/scripts
 RUN bash setup/android_build_env.sh
